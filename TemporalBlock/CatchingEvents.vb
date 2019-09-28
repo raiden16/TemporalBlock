@@ -311,7 +311,9 @@
 
                                         SBOApplication.MessageBox("Este articulo ya fue bloqueado por el usuario " & DUser & " desde " & DDate & " hasta " & DDDate & " por el siguiente motivo: " & DReason)
 
-                                        'Resultado = SBOApplication.MessageBox("", 1, "Continue", "Cancel", "")
+                                    Else
+
+                                        SBOApplication.MessageBox("Este Articulo esta bloqueado actualmente.")
 
                                     End If
 
@@ -412,6 +414,13 @@
                                             coForm.DataSources.UserDataSources.Item("dsMotvU").Value = Nothing
 
                                         End If
+
+                                    Else
+
+                                        oBkI.BlockingItem(Item, Almacen, Id, User, Desde, Hasta, Motivo)
+
+                                        coForm.DataSources.UserDataSources.Item("dsWhsU").Value = Nothing
+                                        coForm.DataSources.UserDataSources.Item("dsMotvU").Value = Nothing
 
                                     End If
 
