@@ -11,7 +11,7 @@
         SBOCompany = oCatchingEvents.SBOCompany
     End Sub
 
-    Public Sub BlockingItem(ByVal Item As String, ByVal WhsHouse As String, ByVal Id As String, ByVal User As String, ByVal Desde As String, ByVal Hasta As String)
+    Public Sub BlockingItem(ByVal Item As String, ByVal WhsHouse As String, ByVal Id As String, ByVal User As String, ByVal Desde As String, ByVal Hasta As String, ByVal Motivo As String)
 
         Dim stQueryH, Line As String
         Dim oRecSetH As SAPbobsCOM.Recordset
@@ -52,7 +52,7 @@
 
                 CreateDate = Now.Year & "/" & Now.Month & "/" & Now.Day
 
-                UpdateTable(TypeM, User, CreateDate, Item, WhsHouse, Desde, Hasta)
+                UpdateTable(TypeM, User, CreateDate, Item, WhsHouse, Desde, Hasta, Motivo)
 
             Else
                 SBOCompany.GetLastError(llError, lsError)
@@ -69,7 +69,7 @@
     End Sub
 
 
-    Public Sub UpdateTable(ByVal TypeM As String, ByVal User As String, ByVal CreateDate As String, ByVal Item As String, ByVal WhsCode As String, ByVal DocDate As String, ByVal DocDueDate As String)
+    Public Sub UpdateTable(ByVal TypeM As String, ByVal User As String, ByVal CreateDate As String, ByVal Item As String, ByVal WhsCode As String, ByVal DocDate As String, ByVal DocDueDate As String, ByVal Reason As String)
 
         Dim stQueryH As String
         Dim oRecSetH As SAPbobsCOM.Recordset
@@ -104,7 +104,7 @@
                 fechaf = DocDueDate.Substring(6, 4) & "/" & DocDueDate.Substring(3, 2) & "/" & DocDueDate.Substring(0, 2)
             End If
 
-            stQueryH2 = "insert into ""DESARROLLAR1"".""@TEMPORALBLOCK"" values ('" & DocEntry & "', '" & DocEntry & "','" & TypeM & "','" & User & "','" & CreateDate & "',rtrim('" & Item & "'),'" & WhsCode & "','" & fechaI & "','" & fechaf & "');"
+            stQueryH2 = "insert into ""DESARROLLAR1"".""@TEMPORALBLOCK"" values ('" & DocEntry & "', '" & DocEntry & "','" & TypeM & "','" & User & "','" & CreateDate & "',rtrim('" & Item & "'),'" & WhsCode & "','" & fechaI & "','" & fechaf & "','" & Reason & "');"
             oRecSetH2.DoQuery(stQueryH2)
 
         Catch ex As Exception

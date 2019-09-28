@@ -248,6 +248,13 @@
         Dim coForm As SAPbouiCOM.Form
         Dim Desde, Hasta As String
         Dim Almacen, Motivo, Id As String
+        Dim stQueryH, stQueryH2 As String
+        Dim oRecSetH, oRecSetH2 As SAPbobsCOM.Recordset
+        Dim Resultado As Integer
+        Dim DUser, DDate, DDDate, DReason As String
+
+        oRecSetH = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+        oRecSetH2 = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
 
         Try
 
@@ -285,12 +292,39 @@
 
                             ElseIf Desde <> "" And Hasta <> "" And Almacen <> "-" And Motivo <> "" Then
 
-                                oBkI.BlockingItem(Item, Almacen, Id, User, Desde, Hasta)
+                                stQueryH = "Select ""ItemCode"",""WhsCode"" from OITW where ""Locked""='Y' and ""ItemCode""=rtrim('" & Item & "') and ""WhsCode""='" & Almacen & "'"
+                                oRecSetH.DoQuery(stQueryH)
 
-                                coForm.DataSources.UserDataSources.Item("dsDate").Value = Nothing
-                                coForm.DataSources.UserDataSources.Item("dsDDate").Value = Nothing
-                                coForm.DataSources.UserDataSources.Item("dsWhs").Value = Nothing
-                                coForm.DataSources.UserDataSources.Item("dsMotv").Value = Nothing
+                                If oRecSetH.RecordCount > 0 Then
+
+                                    oRecSetH.MoveFirst()
+
+                                    stQueryH2 = "Select Top 1 * from ""@TEMPORALBLOCK"" T1 where T1.""U_TypeM""='Bloqueo' and T1.""U_Item""=rtrim('" & Item & "') and T1.""U_WhsCode""='" & Almacen & "' order by to_integer(""Code"") desc"
+                                    oRecSetH2.DoQuery(stQueryH2)
+
+                                    If oRecSetH2.RecordCount > 0 Then
+
+                                        DUser = oRecSetH2.Fields.Item("U_User").Value
+                                        DDate = oRecSetH2.Fields.Item("U_DocDate").Value
+                                        DDDate = oRecSetH2.Fields.Item("U_DocDueDate").Value
+                                        DReason = oRecSetH2.Fields.Item("U_Reason").Value
+
+                                        SBOApplication.MessageBox("Este articulo ya fue bloqueado por el usuario " & DUser & " desde " & DDate & " hasta " & DDDate & " por el siguiente motivo: " & DReason)
+
+                                        'Resultado = SBOApplication.MessageBox("", 1, "Continue", "Cancel", "")
+
+                                    End If
+
+                                Else
+
+                                    oBkI.BlockingItem(Item, Almacen, Id, User, Desde, Hasta, Motivo)
+
+                                    coForm.DataSources.UserDataSources.Item("dsDate").Value = Nothing
+                                    coForm.DataSources.UserDataSources.Item("dsDDate").Value = Nothing
+                                    coForm.DataSources.UserDataSources.Item("dsWhs").Value = Nothing
+                                    coForm.DataSources.UserDataSources.Item("dsMotv").Value = Nothing
+
+                                End If
 
                             End If
 
@@ -313,6 +347,13 @@
         Dim coForm As SAPbouiCOM.Form
         Dim Desde, Hasta As String
         Dim Almacen, Motivo, Id As String
+        Dim stQueryH, stQueryH2 As String
+        Dim oRecSetH, oRecSetH2 As SAPbobsCOM.Recordset
+        Dim DUser, DDate, DDDate, DReason As String
+        Dim Resultado As Integer
+
+        oRecSetH = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+        oRecSetH2 = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
 
         Try
 
@@ -342,10 +383,39 @@
 
                             ElseIf Almacen <> "-" And Motivo <> "" Then
 
-                                oBkI.BlockingItem(Item, Almacen, Id, User, Desde, Hasta)
+                                stQueryH = "Select ""ItemCode"",""WhsCode"" from OITW where ""Locked""='N' and ""ItemCode""=rtrim('" & Item & "') and ""WhsCode""='" & Almacen & "'"
+                                oRecSetH.DoQuery(stQueryH)
 
-                                coForm.DataSources.UserDataSources.Item("dsWhsU").Value = Nothing
-                                coForm.DataSources.UserDataSources.Item("dsMotvU").Value = Nothing
+                                If oRecSetH.RecordCount > 0 Then
+
+                                    SBOApplication.MessageBox("Este Articulo actualmente esta desbloqueado.")
+
+                                Else
+
+                                    stQueryH2 = "Select Top 1 * from ""@TEMPORALBLOCK"" T1 where T1.""U_TypeM""='Bloqueo' and T1.""U_Item""=rtrim('" & Item & "') and T1.""U_WhsCode""='" & Almacen & "' order by to_integer(""Code"") desc"
+                                    oRecSetH2.DoQuery(stQueryH2)
+
+                                    If oRecSetH2.RecordCount > 0 Then
+
+                                        DUser = oRecSetH2.Fields.Item("U_User").Value
+                                        DDate = oRecSetH2.Fields.Item("U_DocDate").Value
+                                        DDDate = oRecSetH2.Fields.Item("U_DocDueDate").Value
+                                        DReason = oRecSetH2.Fields.Item("U_Reason").Value
+
+                                        Resultado = SBOApplication.MessageBox("Este articulo fue bloqueado por el usuario " & DUser & " desde " & DDate & " hasta " & DDDate & " por el siguiente motivo: " & DReason & ". ¿Estas seguro que deseas desbloquearlo?", 1, "Continue", "Cancel", "")
+
+                                        If (Resultado = 1) Then
+
+                                            oBkI.BlockingItem(Item, Almacen, Id, User, Desde, Hasta, Motivo)
+
+                                            coForm.DataSources.UserDataSources.Item("dsWhsU").Value = Nothing
+                                            coForm.DataSources.UserDataSources.Item("dsMotvU").Value = Nothing
+
+                                        End If
+
+                                    End If
+
+                                End If
 
                             End If
 

@@ -38,7 +38,7 @@
                     Item = oRecSetH.Fields.Item("ItemCode").Value
                     WareHouse = oRecSetH.Fields.Item("WhsCode").Value
 
-                    stQueryH2 = "Select Top 1 * from ""@TEMPORALBLOCK"" T1 where T1.""U_TypeM""='Bloqueo' and T1.""U_Item""='" & Item & "' and T1.""U_WhsCode""='" & WareHouse & "' order by T1.""U_CreateDate"",""Code"" desc"
+                    stQueryH2 = "Select Top 1 * from ""@TEMPORALBLOCK"" T1 where T1.""U_TypeM""='Bloqueo' and T1.""U_Item""='" & Item & "' and T1.""U_WhsCode""='" & WareHouse & "' order by to_integer(""Code"") desc"
                     oRecSetH2.DoQuery(stQueryH2)
 
                     If oRecSetH2.RecordCount > 0 Then
