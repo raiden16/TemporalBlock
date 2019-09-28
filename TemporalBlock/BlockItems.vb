@@ -32,6 +32,7 @@
             stQueryH = "Select ""RowNum"" from (Select ROW_NUMBER() OVER (ORDER BY ""WhsCode"")-1 AS ""RowNum"",""WhsCode"" from OITW where ""ItemCode""=rtrim('" & Item & "')) T0 where T0.""WhsCode""='" & WhsHouse & "'"
             oRecSetH.DoQuery(stQueryH)
 
+
             If oRecSetH.RecordCount > 0 Then
 
                 Line = oRecSetH.Fields.Item("RowNum").Value
