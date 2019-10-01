@@ -377,7 +377,7 @@
 
                             If Almacen = "-" Then
 
-                                SBOApplication.MessageBox("Por favor coloca el almacen donde se bloqueara el articulo.")
+                                SBOApplication.MessageBox("Por favor coloca el álmacen donde se bloqueara el articulo.")
 
                             ElseIf Motivo = "" Then
 
