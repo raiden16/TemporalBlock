@@ -22,7 +22,7 @@
         Dim TypeM, CreateDate As String
 
         oItem = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oItems)
-        oRecSetH = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) 'ah!!!!!!!!!!!
+        oRecSetH = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
 
 
         Try
