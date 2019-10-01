@@ -24,7 +24,6 @@ Public Class FrmtekBlock
     Public Function openForm(ByVal psDirectory As String)
         Dim oRecSetH, oRecSetH2 As SAPbobsCOM.Recordset
         Dim key As String
-        'Dim Monto As Integer
 
         Try
 
@@ -62,7 +61,6 @@ Public Class FrmtekBlock
     Public Function openFormU(ByVal psDirectory As String)
         Dim oRecSetH, oRecSetH2 As SAPbobsCOM.Recordset
         Dim key As String
-        'Dim Monto As Integer
 
         Try
 
@@ -80,6 +78,43 @@ Public Class FrmtekBlock
             setForm(csFormUID, key)
 
             cargarComboAlmacenes(key)
+
+            '---- refresca forma
+            coForm.Refresh()
+            coForm.Visible = True
+
+            Return Monto
+
+        Catch ex As Exception
+            If (ex.Message <> "") Then
+                cSBOApplication.MessageBox("FrmTratamientoPedidos. No se pudo iniciar la forma. " & ex.Message)
+            End If
+            Me.close()
+        End Try
+    End Function
+
+
+    '//----- ABRE LA FORMA DENTRO DE LA APLICACION
+    Public Function openFormL(ByVal psDirectory As String)
+        Dim oRecSetH, oRecSetH2 As SAPbobsCOM.Recordset
+        Dim key As String
+
+        Try
+
+            key = "3"
+            oRecSetH = cSBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+            oRecSetH2 = cSBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+            csFormUID = "tekLogBandU"
+            '//CARGA LA FORMA
+            If (loadFormXML(cSBOApplication, csFormUID, psDirectory + "\Forms\" + csFormUID + ".srf") <> 0) Then
+
+                Err.Raise(-1, 1, "")
+            End If
+
+            '--- Referencia de Forma
+            setForm(csFormUID, key)
+
+            'cargarComboAlmacenes(key)
 
             '---- refresca forma
             coForm.Refresh()
@@ -176,6 +211,12 @@ Public Class FrmtekBlock
                 oCombo = coForm.Items.Item("2").Specific  'identifico mi combobox
                 oCombo.DataBind.SetBound(True, "", "dsWhsU")   ' uno mi userdatasources a mi combobox
 
+            ElseIf key = "3" Then
+
+                oGrid = coForm.Items.Item("1").Specific
+                oDataTable = coForm.DataSources.DataTables.Add("dsLog")
+                oGrid.DataTable = oDataTable
+
             End If
 
         Catch ex As Exception
@@ -231,6 +272,39 @@ Public Class FrmtekBlock
             oCombo = Nothing
             oRecSet = Nothing
         End Try
+    End Function
+
+
+    '----- carga los procesos de carga
+    Public Function cargarLog(ByVal Item As String)
+        Dim oGrid As SAPbouiCOM.Grid
+        Dim stQuery As String = ""
+        Dim oRecSet As SAPbobsCOM.Recordset
+
+        Try
+
+            oGrid = coForm.Items.Item("1").Specific
+            oGrid.DataTable.Clear()
+            oRecSet = cSBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+
+            stQuery = "Select  ""Code"" as ""Entry"", ""U_TypeM"" as ""Movimiento"", ""U_User"" as ""Usuario"", ""U_CreateDate"" as ""Fecha de Creación"", ""U_Item"" as ""Articulo"", ""U_WhsCode"" as ""Almacen"", 
+                      ""U_DocDate"" as ""Desde"", ""U_DocDueDate"" as ""Hasta"", ""U_Reason"" as ""Motivo"" 
+                      from ""@TEMPORALBLOCK"" T1 where T1.""U_Item""=rtrim('" & Item & "') order by to_integer(""Code"") asc"
+
+            oGrid.DataTable.ExecuteQuery(stQuery)
+
+            Return 0
+
+        Catch ex As Exception
+
+            MsgBox("FrmTratamientoPedidos. cargarDetalle: " & ex.Message)
+
+        Finally
+
+            oGrid = Nothing
+
+        End Try
+
     End Function
 
 

@@ -230,6 +230,28 @@
 
                             End If
 
+
+                             '--- Boton desbloquear del dato maestros del articulo
+                        Case "btLog"
+
+                            stTabla = "OITM"
+                            coForm = SBOApplication.Forms.Item(FormUID)
+
+                            oDatatable = coForm.DataSources.DBDataSources.Item(stTabla)
+                            Item = oDatatable.GetValue("ItemCode", 0)
+
+                            If Item Is Nothing Or Item = "" Then
+
+                                SBOApplication.MessageBox("Por favor selecciona un articulo.")
+
+                            Else
+
+                                oBlock = New FrmtekBlock
+                                oBlock.openFormL(csDirectory)
+                                oBlock.cargarLog(Item)
+
+                            End If
+
                     End Select
 
             End Select

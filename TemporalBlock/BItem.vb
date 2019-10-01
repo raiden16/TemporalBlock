@@ -37,10 +37,21 @@
             loItem = coForm.Items.Add("btUlck", SAPbouiCOM.BoFormItemTypes.it_BUTTON)
             loItem.Left = coForm.Items.Item(lsItemRef).Left + coForm.Items.Item(lsItemRef).Width + 5
             loItem.Top = coForm.Items.Item(lsItemRef).Top
-            loItem.Width = coForm.Items.Item(lsItemRef).Width + 40
+            loItem.Width = coForm.Items.Item(lsItemRef).Width
             loItem.Height = coForm.Items.Item(lsItemRef).Height
             loButton = loItem.Specific
             loButton.Caption = "Desbloquear"
+
+            '//AGREGA BOTON DESBLOQUEAR EN DATOS MAESTROS DE ARTICULOS
+            coForm = cSBOApplication.Forms.Item(FormUID)
+            lsItemRef = "btUlck"
+            loItem = coForm.Items.Add("btLog", SAPbouiCOM.BoFormItemTypes.it_BUTTON)
+            loItem.Left = coForm.Items.Item(lsItemRef).Left + coForm.Items.Item(lsItemRef).Width + 5
+            loItem.Top = coForm.Items.Item(lsItemRef).Top
+            loItem.Width = coForm.Items.Item(lsItemRef).Width
+            loItem.Height = coForm.Items.Item(lsItemRef).Height
+            loButton = loItem.Specific
+            loButton.Caption = "Log_Bloqueo"
 
         Catch ex As Exception
             cSBOApplication.MessageBox("addFormItems. agregar elementos a la forma. " & ex.Message)
