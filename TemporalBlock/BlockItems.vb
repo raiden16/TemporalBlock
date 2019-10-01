@@ -64,7 +64,7 @@
 
         Catch ex As Exception
 
-            SBOApplication.MessageBox("BlockItems BlockingItem. bloqueando el articulo del almacen. " & ex.Message)
+            SBOApplication.MessageBox("BlockItems  BlockingItem. bloqueando el articulo del almacen. " & ex.Message)
 
         End Try
 
