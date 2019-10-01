@@ -404,7 +404,7 @@
                                         DDDate = oRecSetH2.Fields.Item("U_DocDueDate").Value
                                         DReason = oRecSetH2.Fields.Item("U_Reason").Value
 
-                                        Resultado = SBOApplication.MessageBox("Este articulo fue bloqueado por el usuario " & DUser & " desde " & DDate & " hasta " & DDDate & " por el siguiente motivo: " & DReason & ". ¿Estas seguro que deseas desbloquearlo?", 1, "Continue", "Cancel", "")
+                                        Resultado = SBOApplication.MessageBox("Este articulo fue bloqueado por el usuario " & DUser & " desde " & DDate & " hasta " & DDDate & " por el siguiente motivo: " & DReason & " ¿Estas seguro que deseas desbloquearlo?", 1, "Continue", "Cancel", "")
 
                                         If (Resultado = 1) Then
 
