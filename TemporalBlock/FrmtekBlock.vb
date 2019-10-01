@@ -156,7 +156,7 @@ Public Class FrmtekBlock
 
                 loDS = coForm.DataSources.UserDataSources.Add("dsDDate", SAPbouiCOM.BoDataType.dt_DATE)
                 loText = coForm.Items.Item("2").Specific    'identifico mi caja de texto
-                loText.DataBind.SetBound(True, "", "dsDDate")    ' uno mi userdatasources a mi caja de fecha
+                loText.DataBind.SetBound(True, "", "dsDDate")    ' uno mi userdatasources a mi caja de fecha2
 
                 loDS = coForm.DataSources.UserDataSources.Add("dsWhs", SAPbouiCOM.BoDataType.dt_SHORT_TEXT) 'Creo el datasources
                 oCombo = coForm.Items.Item("3").Specific  'identifico mi combobox
