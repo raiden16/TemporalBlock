@@ -46,7 +46,7 @@
                 oItemWI.Locked = 1               '0="N"   1="Y"
                 TypeM = "Bloqueo"
             Else
-                oItemWI.Locked = 0              '0="N"   1="Y"
+                oItemWI.Locked = 0               '0="N"   1="Y"
                 TypeM = "Desbloqueo"
             End If
 
