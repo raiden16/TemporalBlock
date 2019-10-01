@@ -24,6 +24,7 @@
         oItem = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oItems)
         oRecSetH = SBOCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
 
+
         Try
 
             oItem.GetByKey(Item)
